@@ -3,21 +3,36 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Services\Operations;
 
 class MainController extends Controller
 {
     public function index()
     {
+        // load notes from the user
         $id =  session('user.id');
-        $user = User::find($id)->toArray();
         $notes = User::find($id)->notes()->get()->toArray();
 
-
-        return view('home');
+        return view('home', [ 'notes' => $notes ]);
     }
 
     public function newNote()
     {
-        echo "Estamos na página de nova nota";
+        return view('new_note');
     }
+    public function newNoteSubmit(Request $request)
+    {
+
+    }
+
+    public function editNote($id)
+    {
+        $id = Operations::decryptId($id);
+    }
+    public function deleteNote($id)
+    {
+        $id = Operations::decryptId($id);
+    }
+
 }
